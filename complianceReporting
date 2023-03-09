@@ -18,8 +18,8 @@
 ######### User Settings ##########
 ##################################
 
-TOKEN=''          ### Your Mattermost PAT
-MM_SERVER_URL='' ### Your Mattermost Server URL / With port, if required
+TOKEN=''         ### Your Mattermost PAT
+MM_SERVER_URL='' ### Your Mattermost Server URL (including port, if required). Example https://mattermost.example.com:8065
 
 ##################################
 
