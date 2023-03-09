@@ -24,7 +24,7 @@ MM_SERVER_URL='' ### Your Mattermost Server URL / With port, if required
 ##################################
 
 function _usage() {
-  printf "Usage: list | latest | date [date(YYY-MM-DD)] | id [ID] \n"
+  printf "Usage: list | latest | id [ID] \n"
   exit 0
 }
 
