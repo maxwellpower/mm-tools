@@ -1,5 +1,11 @@
 #!/usr/bin/python3
 
+######### Virtual Environment #########
+# python3 -m venv dbdev
+# source dbdev/bin/activate
+# pip install mysql-connector-python
+#######################################
+
 import mysql.connector
 import time
 import random
