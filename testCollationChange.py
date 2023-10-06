@@ -95,22 +95,26 @@ def change_collation():
     cursor.execute("SHOW TABLES;")
     tables = [table[0] for table in cursor.fetchall()]
 
+    print(f"Updating collation")
+
+    overall_start_time = time.time()  # Start the timer for the entire operation
+
     for table in tables:
         table_start_time = time.time()
         try:
-            cursor.execute(f"ALTER TABLE {table} CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;")
+#            cursor.execute(f"ALTER TABLE {table} CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;")
+            cursor.execute(f"ALTER TABLE {table} CONVERT TO CHARACTER SET utf8mb3 COLLATE utf8_general_ci;")
+            conn.commit()
             table_end_time = time.time() - table_start_time
             print(f"Changed collation for table: {table}. Time taken: {format_time(table_end_time)}")
         except Exception as e:
             print(f"Error changing collation for table {table}: {e}")
 
-    conn.commit()
-
-    total_time = time.time() - table_start_time
-    print(f"Total time taken for all tables: {format_time(total_time)}")
-
     cursor.close()
     conn.close()
+
+    overall_end_time = time.time() - overall_start_time
+    print(f"\nTotal time taken to change collation for {len(tables)} tables: {format_time(overall_end_time)}")
 
 def main_populate():
     """Main function to populate the database."""
