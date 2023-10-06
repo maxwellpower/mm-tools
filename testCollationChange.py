@@ -5,9 +5,9 @@ import string
 
 # Database configuration
 DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'mmuser',
-    'password': 'mmuserpass',
+    'host': 'mpower-pnc-test-db-01.cwlitorkv4mf.us-west-2.rds.amazonaws.com',
+    'user': 'admin',
+    'password': 'Welcome23',
     'database': 'mattermost'
 }
 
@@ -30,7 +30,7 @@ def fetch_user_channel_ids():
     conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT Id FROM Users LIMIT 30;")
+    cursor.execute("SELECT DISTINCT Id FROM Users LIMIT 30;")
     user_ids = [row[0] for row in cursor.fetchall()]
 
     user_channel_map = {}
@@ -54,6 +54,8 @@ def populate_database(num_posts=12500000):
     user_ids = list(user_channel_map.keys())
 
     start_time = time.time()  # Start the timer
+
+    print(f"Adding {num_posts} to the database")
 
     for count in range(1, num_posts + 1):
         try:
