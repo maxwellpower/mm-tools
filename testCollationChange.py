@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import mysql.connector
 import time
 import random
@@ -86,7 +88,8 @@ def populate_database(num_posts=12500000):
     total_time = time.time() - start_time
     print(f"Total time taken to insert {num_posts} posts: {format_time(total_time)}")
 
-def change_collation():
+def change_collation(charset="utf8mb3", collation="utf8_general_ci"):
+    # utf8mb4, utf8mb4_0900_ai_ci / utf8mb3, utf8_general_ci
     """Change the collation of all tables in the database and measure the time taken."""
     conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
@@ -95,36 +98,38 @@ def change_collation():
     cursor.execute("SHOW TABLES;")
     tables = [table[0] for table in cursor.fetchall()]
 
-    print(f"Updating collation")
+    print(f"Tables loaded successfully, updating collation to {charset}, {collation}")
 
     overall_start_time = time.time()  # Start the timer for the entire operation
 
     for table in tables:
         table_start_time = time.time()
         try:
-#            cursor.execute(f"ALTER TABLE {table} CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;")
-            cursor.execute(f"ALTER TABLE {table} CONVERT TO CHARACTER SET utf8mb3 COLLATE utf8_general_ci;")
+            print(f"Updating {table} ...")
+            cursor.execute(f"ALTER TABLE {table} CONVERT TO CHARACTER SET {charset} COLLATE {collation};")
             conn.commit()
             table_end_time = time.time() - table_start_time
-            print(f"Changed collation for table: {table}. Time taken: {format_time(table_end_time)}")
+            print(f"Changed collation for {table}. Time spent: {format_time(table_end_time)}")
         except Exception as e:
-            print(f"Error changing collation for table {table}: {e}")
+            print(f"Error changing collation for {table}: {e}")
 
     cursor.close()
     conn.close()
 
     overall_end_time = time.time() - overall_start_time
-    print(f"\nTotal time taken to change collation for {len(tables)} tables: {format_time(overall_end_time)}")
+    print(f"\nTotal time spent changing collation for {len(tables)} tables: {format_time(overall_end_time)}")
 
 def main_populate():
     """Main function to populate the database."""
-    populate_database()
     print("Database population completed.")
+    populate_database()
+    print("DONE: Populating database.")
 
 def main_change_collation():
     """Main function to change the collation."""
-    duration = change_collation()
-    print(f"Time taken to change collation: {duration} seconds")
+    print(f"Changing Collation ...")
+    change_collation()
+    print(f"DONE: Changing collation.")
 
 if __name__ == '__main__':
     choice = input("Choose an action:\n1. Populate Database\n2. Change Collation\nEnter choice (1/2): ")
