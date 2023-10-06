@@ -5,9 +5,9 @@ import string
 
 # Database configuration
 DB_CONFIG = {
-    'host': 'mpower-pnc-test-db-01.cwlitorkv4mf.us-west-2.rds.amazonaws.com',
-    'user': 'admin',
-    'password': 'Welcome23',
+    'host': 'localhost',
+    'user': 'mmuser',
+    'password': 'mmuserpass',
     'database': 'mattermost'
 }
 
